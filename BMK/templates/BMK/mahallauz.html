@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="{% static 'icons/image.png' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'icons/image.png' %}">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#050505">
+    <title>Rais Paneli | BMK</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --accent: #a8ff78; --danger: #ff4d4d; --green: #28a745; }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            background-color: black;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 1. Fon - Interstellar Qora Tuynuk */
+        .background-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            background-image: url('https://preview.redd.it/cool-black-hole-in-blender-3-5-cycles-v0-142ccuj1w2sa1.png?width=1920&format=png&auto=webp&s=cc0df69e9c3974ec75a62c073b9fd595015f62d4');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(25%) contrast(115%); /* Kontent uchun qorong'ulashtirildi */
+        }
+
+        /* 2. Asosiy konteyner */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 10px 0;
+        }
+
+        header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #ffffff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.08);
+            padding: 7px 18px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(168, 255, 120, 0.2);
+            transition: 0.3s;
+        }
+
+        /* 3. Glassmorphism Form */
+        .form-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid rgba(168, 255, 120, 0.2);
+            margin-bottom: 40px;
+            backdrop-filter: blur(25px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        input, textarea {
+            width: 100%; padding: 16px; margin: 12px 0; border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.4);
+            color: white; box-sizing: border-box; font-size: 16px;
+            outline: none; transition: 0.3s;
+        }
+
+        input:focus, textarea:focus { border-color: var(--accent); background: rgba(0,0,0,0.6); }
+
+        .btn {
+            width: 100%;
+            background: linear-gradient(45deg, var(--green), var(--accent));
+            border: none; padding: 18px; border-radius: 18px;
+            font-weight: 800; color: #000; cursor: pointer;
+            margin-top: 15px; text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn:active { transform: scale(0.95); }
+
+        /* 4. Xabarlar ro'yxati */
+        .msg-card {
+            background: rgba(10, 10, 10, 0.6);
+            padding: 20px;
+            border-radius: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(15px);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .msg-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .msg-card h4 { margin: 0; font-size: 1.1rem; color: var(--accent); flex: 1; font-family: 'Montserrat', sans-serif; }
+
+        .del-btn {
+            background: rgba(255, 77, 77, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 77, 77, 0.4);
+            padding: 7px 14px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+        .del-btn:hover { background: var(--danger); color: white; }
+
+        img, video {
+            width: 100%; border-radius: 20px; margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: block;
+        }
+
+        .time-label { display: block; margin-top: 15px; font-size: 11px; opacity: 0.5; color: #ccc; letter-spacing: 0.5px; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 15px; }
+            header h2 { font-size: 1.2rem; }
+            .form-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-container"></div>
+
+    <div class="container">
+        <header>
+            <h2>Rais Paneli</h2>
+            <a href="/adminhomee/" class="back-link">← ASOSIY</a>
+        </header>
+
+        <div class="form-card">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="Xabar sarlavhasi" required>
+                <textarea name="content" rows="3" placeholder="Aholi uchun xabar yozing..." required></textarea>
+
+                <div style="margin: 10px 0;">
+                    <p style="font-size: 11px; margin-bottom: 8px; opacity: 0.6; color: var(--accent);">📸 MEDIA YUKLASH (IXTIYORIY):</p>
+                    <input type="file" name="image" accept="image/*" style="font-size: 12px; padding: 12px; border-style: dashed;">
+                    <input type="file" name="video" accept="video/*" style="font-size: 12px; padding: 12px; border-style: dashed;">
+                </div>
+
+                <button type="submit" class="btn">E'lonni chop etish</button>
+            </form>
+        </div>
+
+        <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.7; margin-bottom: 25px; padding-left: 5px;">Yuborilgan xabarlar:</h3>
+
+        {% for post in announcements %}
+            <div class="msg-card">
+                <div class="msg-header">
+                    <h4>{{ post.title }}</h4>
+                    <a href="{% url 'delete_announcement' post.pk %}"
+                       class="del-btn"
+                       onclick="return confirm('Haqiqatan ham o\'chirmoqchimisiz?')">O'chirish</a>
+                </div>
+
+                <p style="font-size: 14.5px; color: rgba(255,255,255,0.85); line-height: 1.6; margin-top: 12px;">{{ post.content }}</p>
+
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="rasm">
+                {% endif %}
+
+                {% if post.video %}
+                    <video controls preload="metadata">
+                        <source src="{{ post.video.url }}" type="video/mp4">
+                    </video>
+                {% endif %}
+
+                <span class="time-label">📅 {{ post.created_at|date:"d.m.Y, H:i" }}</span>
+            </div>
+        {% empty %}
+            <div style="text-align: center; padding: 40px; background: rgba(0,0,0,0.4); border-radius: 25px; border: 1px dashed rgba(255,255,255,0.2);">
+                <p style="opacity: 0.4; font-size: 0.9rem;">Hozircha hech qanday e'lon mavjud emas.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
