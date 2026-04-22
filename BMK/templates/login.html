@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="{% static 'icons/1.png' %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static 'icons/image.png' %}">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#050505">
+    <title>Kirish | BMK</title>
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --accent: #a8ff78; }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            background-color: black;
+            color: white;
+        }
+
+        /* 1. Fon - Interstellar Qora Tuynuk */
+        .background-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            background-image: url('https://preview.redd.it/cool-black-hole-in-blender-3-5-cycles-v0-142ccuj1w2sa1.png?width=1920&format=png&auto=webp&s=cc0df69e9c3974ec75a62c073b9fd595015f62d4');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(35%) contrast(115%);
+        }
+
+        /* 2. Login kartasi */
+        .login-wrapper {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(168, 255, 120, 0.2);
+            padding: 40px 30px;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            margin: 0 0 30px 0;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: linear-gradient(to right, #ffffff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(168, 255, 120, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #28a745, var(--accent));
+            border: none;
+            border-radius: 15px;
+            color: #000;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:active { transform: scale(0.96); }
+
+        .error {
+            background: rgba(255, 77, 77, 0.15);
+            color: #ff7675;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 77, 77, 0.3);
+        }
+
+        .footer-links {
+            margin-top: 25px;
+            font-size: 0.85rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div class="background-container"></div>
+
+    <div class="login-wrapper">
+        <div class="glass-card">
+            <h2>Tizimga Kirish</h2>
+
+            {% if error_message %}
+                <p class="error">{{ error_message }}</p>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="device_id" id="device_id_login">
+
+                <div class="input-group">
+                    <input type="text" name="u_name" placeholder="Login" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" name="p_val" placeholder="Parol" required>
+                </div>
+
+                <button type="submit">Kirish</button>
+
+                <div class="footer-links">
+                    <span>Hisobingiz yo'qmi? </span>
+                    <a href="/register/">Ro'yxatdan o'tish</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let dId = localStorage.getItem('device_token');
+        if (!dId) {
+            dId = 'D-' + Math.random().toString(36).substring(2) + Date.now();
+            localStorage.setItem('device_token', dId);
+        }
+        document.getElementById('device_id_login').value = dId;
+    </script>
+</body>
+</html>
